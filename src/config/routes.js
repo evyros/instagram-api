@@ -6,20 +6,20 @@ const jwt = require('jsonwebtoken');
 
 const auth = (req, res, next) => {
     const token = req.headers['authorization'];
-    console.log(token);
     try {
-        jwt.verify(token, 'shahar');
+        const user = jwt.verify(token, 'shahar');
+        req.userId = user.id;
         next();
     } catch (err) {
-        // err
-        console.log(err)
-        res.status(403).send('Not Nice');
+        console.log(err);
+        res.status(403).send();
     }
-}
+};
 
+router.get('/user/me', auth, usersController.me);
 router.post('/user', usersController.create);
-router.post('/login', usersController.login); // req.body => username, password
-router.get('/health', auth, (req, res) => {
+router.post('/login', usersController.login);
+router.get('/health', (req, res) => {
     res.sendStatus(200);
 });
 

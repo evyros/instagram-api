@@ -28,7 +28,21 @@ async function login(req, res) {
     res.json({ token });
 }
 
+async function me(req, res) {
+    try {
+        const user = await User.findById(req.userId);
+        if (!user) {
+            res.sendStatus(401);
+            return;
+        }
+        res.send(user);
+    } catch (err) {
+        res.sendStatus(500);
+    }
+}
+
 module.exports = {
     create,
-    login
+    login,
+    me
 };
