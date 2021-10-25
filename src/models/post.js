@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 const postScheme = new mongoose.Schema({
     body: {
         type: String,
-        required: true,
     },
     likes: {
         type: Array,
@@ -19,7 +18,8 @@ const postScheme = new mongoose.Schema({
         default: () => new Date()
     },
     image: {
-        type: String
+        type: String,
+        required: true
     }
 });
 

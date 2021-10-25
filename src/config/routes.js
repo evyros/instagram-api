@@ -4,6 +4,18 @@ const router = express.Router();
 const usersController = require('../controllers/users.controller');
 const postsController = require('../controllers/posts.controller');
 const jwt = require('jsonwebtoken');
+const multer  = require('multer');
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public');
+    },
+    filename: (req, file, cb) => {
+        const extension = file.originalname.split('.').pop();
+        const fileName = (Math.random() + 1).toString(36).substring(7);
+        cb(null, fileName + '.' + extension);
+    }
+});
+const upload = multer({ storage });
 
 const auth = (req, res, next) => {
     const token = req.headers['authorization'];
@@ -18,7 +30,7 @@ const auth = (req, res, next) => {
 };
 
 router.get('/user/me', auth, usersController.me);
-router.post('/post', auth, postsController.create);
+router.post('/post', auth, upload.single('image'), postsController.create);
 router.get('/post', postsController.getAll);
 router.post('/user', usersController.create);
 router.post('/login', usersController.login);

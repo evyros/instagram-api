@@ -4,8 +4,9 @@ async function create(req, res) {
     const { body } = req.body;
     const tempPost = {
         body,
+        image: req.file.filename,
         author: req.userId
-    }
+    };
     const post = new Post(tempPost);
     try {
         const savedPost = await post.save();
