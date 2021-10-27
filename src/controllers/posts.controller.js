@@ -1,4 +1,5 @@
 const Post = require("../models/post.js");
+const User = require("../models/user.js");
 
 async function create(req, res) {
     const { body } = req.body;
@@ -22,7 +23,15 @@ async function getAll(req, res) {
     res.json(allPosts);
 }
 
+async function getPosts(req, res) {
+    const { username } = req.params;
+    const user = await User.findOne({username});
+    const posts = await Post.find({author: user._id }).populate('author');
+    res.send(posts);
+}
+
 module.exports = {
     create,
-    getAll
+    getAll,
+    getPosts
 }

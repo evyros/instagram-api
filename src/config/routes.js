@@ -32,7 +32,11 @@ const auth = (req, res, next) => {
 router.get('/user/me', auth, usersController.me);
 router.post('/post', auth, upload.single('image'), postsController.create);
 router.get('/post', postsController.getAll);
+router.get('/post/:username', auth, postsController.getPosts);
+
 router.post('/user', usersController.create);
+router.get('/user/:username', auth, usersController.getUser);
+
 router.post('/login', usersController.login);
 router.get('/health', (req, res) => {
     res.sendStatus(200);

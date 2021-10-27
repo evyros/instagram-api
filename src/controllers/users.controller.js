@@ -1,6 +1,7 @@
 
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
+const Post = require('../models/post');
 
 async function create(req, res) {
     const user = new User(req.body);
@@ -41,8 +42,24 @@ async function me(req, res) {
     }
 }
 
+async function getUser(req, res) {
+    try {
+        const { username } = req.params;
+        const user = await User.findOne({ username });
+        if (!user) {
+            res.sendStatus(404);
+        }
+        else {
+            res.send(user);
+        }
+    } catch (err) {
+        res.sendStatus(500);
+    }
+}
+
 module.exports = {
     create,
     login,
-    me
+    me,
+    getUser
 };
