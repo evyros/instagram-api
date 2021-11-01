@@ -57,9 +57,22 @@ async function getUser(req, res) {
     }
 }
 
+async function search(req, res) {
+    const { username } = req.params;
+    try {
+        const users = await User.find({
+           username: new RegExp(username, 'ig')
+        });
+        res.json(users);
+    } catch(e) {
+        res.sendStatus(500);
+    }
+}
+
 module.exports = {
     create,
     login,
     me,
-    getUser
+    getUser,
+    search
 };
