@@ -29,11 +29,13 @@ const auth = (req, res, next) => {
     }
 };
 
-router.get('/user/me', auth, usersController.me);
+router.post('/post/:id/like', auth, postsController.like);
+router.post('/post/:id/unlike', auth, postsController.unlike);
 router.post('/post', auth, upload.single('image'), postsController.create);
 router.get('/post', postsController.getAll);
 router.get('/post/:username', auth, postsController.getPosts);
 
+router.get('/user/me', auth, usersController.me);
 router.post('/user', usersController.create);
 router.get('/user/:username', auth, usersController.getUser);
 router.get('/search/user/:username', auth, usersController.search);
