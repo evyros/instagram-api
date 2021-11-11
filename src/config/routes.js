@@ -4,7 +4,7 @@ const router = express.Router();
 const usersController = require('../controllers/users.controller');
 const postsController = require('../controllers/posts.controller');
 const jwt = require('jsonwebtoken');
-const multer  = require('multer');
+const multer = require('multer');
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'public');
@@ -39,6 +39,8 @@ router.get('/user/me', auth, usersController.me);
 router.post('/user', usersController.create);
 router.get('/user/:username', auth, usersController.getUser);
 router.get('/search/user/:username', auth, usersController.search);
+router.post('/user/:username/follow', auth, usersController.follow);
+router.post('/user/:username/unfollow', auth, usersController.unfollow);
 
 router.post('/login', usersController.login);
 router.get('/health', (req, res) => {
