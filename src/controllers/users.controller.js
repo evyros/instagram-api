@@ -1,11 +1,12 @@
 
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
-const Post = require('../models/post');
+const md5 = require('md5');
 const mongoose = require('mongoose');
 
 async function create(req, res) {
     const user = new User(req.body);
+    user.password = md5(user.password);
     try {
         const savedUser = await user.save();
         res.status(201).send(savedUser);
@@ -20,7 +21,10 @@ async function login(req, res) {
         res.status(403).json({ message: 'One or more of the parameters are missing' });
         return;
     }
-    const userExist = await User.findOne({ username, password });
+    const userExist = await User.findOne({
+        username,
+        password: md5(password)
+    });
     if (!userExist) {
         res.status(403).json({ message: 'One of the paramateres is incorrect' });
         return;
