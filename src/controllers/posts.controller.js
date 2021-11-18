@@ -27,8 +27,8 @@ async function getAll(req, res) {
 
 async function getPosts(req, res) {
     const { username } = req.params;
-    const user = await User.findOne({username});
-    const posts = await Post.find({author: user._id }).populate('author');
+    const user = await User.findOne({ username });
+    const posts = await Post.find({ author: user._id }).populate('author');
     res.send(posts);
 }
 
@@ -55,15 +55,19 @@ async function getOne(req, res) {
 }
 
 async function createComment(req, res) {
+    console.log(req.body)
     const comment = new Comment({
         author: req.userId,
         post: req.params.id,
         content: req.body.content
     });
     try {
-        const createdComment = await comment.save();
+        let createdComment = await comment.save();
+        createdComment = await Comment.findById(createdComment._id).populate('author');
+        console.log(createdComment)
+
         res.json(createdComment);
-    } catch(e) {
+    } catch (e) {
         console.log(e);
         res.sendStatus(400);
     }
@@ -72,9 +76,9 @@ async function createComment(req, res) {
 async function getComments(req, res) {
     const { id } = req.params;
     try {
-        const comments = await Comment.find({ post: id });
+        const comments = await Comment.find({ post: id }).populate('author');
         res.json(comments);
-    } catch(e) {
+    } catch (e) {
         res.sendStatus(500);
     }
 }
