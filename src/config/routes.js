@@ -36,10 +36,11 @@ router.get('/post/:id/comment', auth, postsController.getComments);
 router.get('/post/:id', auth, postsController.getOne);
 router.post('/post', auth, upload.single('image'), postsController.create);
 router.get('/post', postsController.getAll);
-router.get('/post/:username', auth, postsController.getPosts);
 
+router.get('/user/:username/post', auth, postsController.getPosts);
 router.get('/user/me', auth, usersController.me);
 router.post('/user', usersController.create);
+// router.put('/user', auth, upload.single('image') , usersController.edit);
 router.get('/user/:username', auth, usersController.getUser);
 router.get('/search/user/:username', auth, usersController.search);
 router.post('/user/:username/follow', auth, usersController.follow);

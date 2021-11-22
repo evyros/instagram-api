@@ -10,7 +10,7 @@ const postScheme = new mongoose.Schema({
     },
     author: {
         type: Schema.Types.ObjectId,
-        ref: "User",
+        ref: "user",
         required: true,
     },
     createdAt: {
